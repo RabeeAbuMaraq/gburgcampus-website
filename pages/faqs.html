@@ -4,104 +4,383 @@
   <meta charset="UTF-8">
   <title>FAQs - Gettysburg Campus App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/faviocns/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/faviocns/favicon-96x96.png">
+  <link rel="icon" type="image/x-icon" href="/faviocns/favicon.ico">
+  <link rel="manifest" href="/faviocns/site.webmanifest">
   <style>
     body {
-      background: #fafbfc;
-      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      color: #222;
+      background: #1b1917;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      color: #fff7ed;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
-    .faq-container {
-      max-width: 650px;
-      margin: 48px auto 32px auto;
-      background: #fff;
+    .faq-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      backdrop-filter: blur(18px);
+      background: rgba(36, 34, 32, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      min-height: 64px;
+      box-sizing: border-box;
+    }
+    .faq-header-inner {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+    .faq-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .faq-logo {
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      padding: 40px 32px 32px 32px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .faq-header-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #fff7ed;
+      margin-right: 0.7rem;
+    }
+    .faq-header-version {
+      font-size: 0.95rem;
+      color: #b6a99a;
+      background: rgba(255,255,255,0.08);
+      padding: 0.18em 0.7em;
+      border-radius: 0.7em;
+      font-weight: 600;
+      margin-left: 0.1em;
+    }
+    .faq-header-contact {
+      background: rgba(255,255,255,0.10);
+      color: #fff7ed;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.7em;
+      padding: 0.6em 1.4em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      outline: none;
+      margin-left: 1.5rem;
+    }
+    .faq-header-contact:hover, .faq-header-contact:focus {
+      background: rgba(255,255,255,0.18);
+      color: #fff7ed;
+    }
+    .faq-main {
+      max-width: 650px;
+      margin: 56px auto 32px auto;
+      padding: 0 1.5rem;
     }
     .faq-title {
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: 2.7rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
-      letter-spacing: -1px;
       text-align: left;
+      color: #fff7ed;
+      margin-top: 2.5rem;
     }
     .faq-updated {
-      color: #888;
+      color: #b6a99a;
       font-size: 1rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2.8rem;
       text-align: left;
     }
-    .faq-section {
-      margin-bottom: 2.5rem;
+    .faq-accordion {
+      border-radius: 12px;
+      overflow: hidden;
+      background: transparent;
+      box-shadow: none;
     }
-    .faq-question {
-      font-size: 1.25rem;
+    .faq-item {
+      border-bottom: 1px solid #3a3734;
+    }
+    .faq-question-row {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 2.1rem 0.5rem 2.1rem 0;
+      font-size: 1.22rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
-      margin-top: 0;
+      color: #fff7ed;
+      transition: background 0.2s;
+      user-select: none;
+      gap: 0.7rem;
+    }
+    .faq-question-row:focus {
+      outline: none;
+      background: #23201d;
+    }
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      margin-right: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .faq-icon svg {
+      display: block;
+      width: 28px;
+      height: 28px;
+      stroke: #fff7ed;
+      stroke-width: 2.5;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg) scale(1.1);
     }
     .faq-answer {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin-bottom: 0.5rem;
-      color: #333;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      color: #fff7ed;
+      font-size: 1.09rem;
+      line-height: 1.8;
+      padding: 0 0.5rem;
+      margin-bottom: 0;
+      margin-top: 0;
+      transition: max-height 0.5s cubic-bezier(.4,0,.2,1), opacity 0.35s cubic-bezier(.4,0,.2,1), padding 0.35s, margin 0.35s;
     }
-    hr {
-      border: none;
-      border-top: 1px solid #eee;
-      margin: 2.5rem 0;
+    .faq-item.open .faq-answer {
+      opacity: 1;
+      padding: 0.7rem 0.5rem 1.7rem 3.1rem;
+      margin-bottom: 0.7rem;
+      margin-top: -0.7rem;
+      max-height: 400px;
+      transition: max-height 0.6s cubic-bezier(.4,0,.2,1), opacity 0.45s cubic-bezier(.4,0,.2,1), padding 0.35s, margin 0.35s;
     }
     .faq-footer {
-      margin-top: 2.5rem;
-      font-size: 1.1rem;
-      color: #444;
+      margin-top: 4.5rem;
+      font-size: 1.13rem;
+      color: #fff7ed;
       text-align: left;
+      padding-bottom: 2.5rem;
+    }
+    .faq-footer strong {
+      color: #fff7ed;
+    }
+    a {
+      color: #fff7ed;
+      text-decoration: underline;
     }
     @media (max-width: 700px) {
-      .faq-container {
-        padding: 20px 8px 16px 8px;
+      .faq-header-inner {
+        padding: 0 0.5rem;
+      }
+      .faq-main {
+        padding: 0 0.5rem;
       }
       .faq-title {
         font-size: 2rem;
+      }
+      .faq-question-row {
+        font-size: 1.05rem;
+        padding: 1.3rem 0.2rem 1.3rem 0;
+      }
+      .faq-answer {
+        font-size: 1rem;
+        padding: 0.5rem 0.2rem 1.1rem 2.1rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="faq-container">
-    <div class="faq-title">FAQs</div>
-    <div class="faq-updated">Updated April 2024</div>
-
-    <div class="faq-section">
-      <div class="faq-question">How do I download the app?</div>
-      <div class="faq-answer">You can download the app from the App Store using the button on the homepage.</div>
+  <header class="faq-header">
+    <div class="faq-header-inner">
+      <div class="faq-header-left">
+        <div class="faq-logo">
+          <img src="https://i.postimg.cc/28QNRJ9b/temp-Imagedgnt-Fn.avif" alt="Campus Logo" style="width:32px;height:32px;object-fit:contain;" />
+        </div>
+        <span class="faq-header-title">Campus</span>
+        <span class="faq-header-version">v2.1</span>
+      </div>
+      <button class="faq-header-contact" onclick="window.location.href='mailto:aboura01@gettysburg.edu'">
+        Contact
+      </button>
     </div>
-    <hr>
-    <div class="faq-section">
-      <div class="faq-question">Is the app free to use?</div>
-      <div class="faq-answer">Yes, the Gettysburg Campus App is free for all students, faculty, and staff.</div>
-    </div>
-    <hr>
-    <div class="faq-section">
-      <div class="faq-question">What devices are supported?</div>
-      <div class="faq-answer">The app is available for iOS and Android devices. Please check the App Store or Google Play for compatibility.</div>
-    </div>
-    <hr>
-    <div class="faq-section">
-      <div class="faq-question">Who can I contact for support?</div>
-      <div class="faq-answer">If you need help, please use the contact form on our website or email support@gettysburg.edu.</div>
-    </div>
-    <hr>
-    <div class="faq-section">
-      <div class="faq-question">Does the app collect any personal data?</div>
-      <div class="faq-answer">No personal data is collected by the Gettysburg Campus App. Please see our privacy policy for more details.</div>
+  </header>
+  <main class="faq-main">
+    <div class="faq-title">Frequently Asked Questions</div>
+    <div class="faq-updated">Updated July 2025</div>
+    <div class="faq-accordion" id="faqAccordion">
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          1. What is the Gettysburg Campus App and who is it for?
+        </div>
+        <div class="faq-answer">
+          The Gettysburg Campus App is a student-designed mobile platform built for Gettysburg College students, faculty, and staff to easily access campus services, schedules, events, and resources in one place.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          2. How do I log into the app?
+        </div>
+        <div class="faq-answer">
+          You can log in using your Gettysburg College email credentials. Authentication is handled securely through the college’s Single Sign-On system.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          3. Is the app free for all students and faculty?
+        </div>
+        <div class="faq-answer">
+          Yes, the app is completely free to download and use for all members of the Gettysburg College community.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          4. Can I view my class schedule and assignments through the app?
+        </div>
+        <div class="faq-answer">
+          Yes. The app includes a personalized dashboard where students can view their daily schedule, upcoming classes, and assignment summaries.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          5. Does the app include campus dining menus and meal balance?
+        </div>
+        <div class="faq-answer">
+          Absolutely. You can view current dining hall menus, opening hours, and check your Bullet Bucks and meal swipe balances in real time.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          6. Will I receive notifications for events and class changes?
+        </div>
+        <div class="faq-answer">
+          Yes. You can opt in to receive real-time notifications for upcoming events, academic reminders, class cancellations, and alerts from campus services.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          7. Can I use the app to navigate the campus or locate buildings?
+        </div>
+        <div class="faq-answer">
+          Yes. The interactive campus map helps you locate buildings, departments, shuttle stops, and key campus landmarks.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          8. How often is the information in the app updated?
+        </div>
+        <div class="faq-answer">
+          Information is updated daily, with real-time integrations for schedules, dining, and events provided by the college’s APIs and data sources.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          9. Is there a dark mode or theme customization?
+        </div>
+        <div class="faq-answer">
+          Yes. Users can switch between light and dark mode, and even choose from several minimalistic themes for a personalized experience.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question-row" tabindex="0">
+          <span class="faq-icon">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          10. How can I provide feedback or request support for the app?
+        </div>
+        <div class="faq-answer">
+          You can use the “Feedback” option in the More tab to submit comments, report bugs, or request new features. We’re actively listening!
+        </div>
+      </div>
     </div>
     <div class="faq-footer">
       <strong>Have more questions?</strong><br>
       If you have any additional questions, do not hesitate to <a href="mailto:support@gettysburg.edu">contact us</a>.
     </div>
-  </div>
+  </main>
+  <script>
+    // Accordion logic: only one open at a time, plus/minus animation
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach((item, idx) => {
+      const questionRow = item.querySelector('.faq-question-row');
+      questionRow.addEventListener('click', () => {
+        faqItems.forEach((other, i) => {
+          if (other !== item) {
+            other.classList.remove('open');
+            // Reset icon to plus
+            const icon = other.querySelector('.faq-icon svg');
+            icon.innerHTML = '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>';
+          }
+        });
+        const isOpen = item.classList.contains('open');
+        if (!isOpen) {
+          item.classList.add('open');
+          // Animate plus to minus
+          const icon = item.querySelector('.faq-icon svg');
+          icon.innerHTML = '<line x1="5" y1="12" x2="19" y2="12"/>';
+        } else {
+          item.classList.remove('open');
+          // Animate minus to plus
+          const icon = item.querySelector('.faq-icon svg');
+          icon.innerHTML = '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>';
+        }
+      });
+      // Keyboard accessibility
+      questionRow.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          questionRow.click();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
