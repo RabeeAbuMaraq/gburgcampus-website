@@ -4,14 +4,104 @@
   <meta charset="UTF-8">
   <title>FAQs - Gettysburg Campus App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Add your styles and favicon links here -->
+  <style>
+    body {
+      background: #fafbfc;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .faq-container {
+      max-width: 650px;
+      margin: 48px auto 32px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      padding: 40px 32px 32px 32px;
+    }
+    .faq-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+      text-align: left;
+    }
+    .faq-updated {
+      color: #888;
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      text-align: left;
+    }
+    .faq-section {
+      margin-bottom: 2.5rem;
+    }
+    .faq-question {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      margin-top: 0;
+    }
+    .faq-answer {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 2.5rem 0;
+    }
+    .faq-footer {
+      margin-top: 2.5rem;
+      font-size: 1.1rem;
+      color: #444;
+      text-align: left;
+    }
+    @media (max-width: 700px) {
+      .faq-container {
+        padding: 20px 8px 16px 8px;
+      }
+      .faq-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Frequently Asked Questions</h1>
-  <div>
-    <h2>How do I download the app?</h2>
-    <p>You can download the app from the App Store using the button on the homepage.</p>
-    <!-- Add more questions and answers here -->
+  <div class="faq-container">
+    <div class="faq-title">FAQs</div>
+    <div class="faq-updated">Updated April 2024</div>
+
+    <div class="faq-section">
+      <div class="faq-question">How do I download the app?</div>
+      <div class="faq-answer">You can download the app from the App Store using the button on the homepage.</div>
+    </div>
+    <hr>
+    <div class="faq-section">
+      <div class="faq-question">Is the app free to use?</div>
+      <div class="faq-answer">Yes, the Gettysburg Campus App is free for all students, faculty, and staff.</div>
+    </div>
+    <hr>
+    <div class="faq-section">
+      <div class="faq-question">What devices are supported?</div>
+      <div class="faq-answer">The app is available for iOS and Android devices. Please check the App Store or Google Play for compatibility.</div>
+    </div>
+    <hr>
+    <div class="faq-section">
+      <div class="faq-question">Who can I contact for support?</div>
+      <div class="faq-answer">If you need help, please use the contact form on our website or email support@gettysburg.edu.</div>
+    </div>
+    <hr>
+    <div class="faq-section">
+      <div class="faq-question">Does the app collect any personal data?</div>
+      <div class="faq-answer">No personal data is collected by the Gettysburg Campus App. Please see our privacy policy for more details.</div>
+    </div>
+    <div class="faq-footer">
+      <strong>Have more questions?</strong><br>
+      If you have any additional questions, do not hesitate to <a href="mailto:support@gettysburg.edu">contact us</a>.
+    </div>
   </div>
 </body>
 </html>
