@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gettysburg Campus App</title>
+    <title>Gettysburg Campus App - Your Complete Campus Companion</title>
+    <meta name="description" content="The ultimate campus app for Gettysburg College students. Access dining hours, events, maps, schedules, and more in one place.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #f5f3f0;
+            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4e0 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            scroll-behavior: smooth;
         }
         .hero-text {
             font-weight: 900;
@@ -21,30 +24,50 @@
             background-clip: text;
         }
         .feature-item {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .feature-item:hover::before {
+            left: 100%;
         }
         .feature-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
         .feature-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
         .animate-pulse {
             animation: pulse 2s infinite;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
         .animate-fadeIn {
-            animation: fadeIn 0.8s ease-out;
+            animation: fadeIn 1s ease-out;
         }
         .animate-slideUp {
-            animation: slideUp 0.8s ease-out;
+            animation: slideUp 1s ease-out;
         }
         .animate-slideUp-delay {
-            animation: slideUp 1s ease-out 0.6s both;
+            animation: slideUp 1.2s ease-out 0.8s both;
+        }
+        .animate-bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-30px); }
@@ -54,31 +77,145 @@
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);
+            padding: 2px;
+            border-radius: 1rem;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: white;
+            border-radius: calc(1rem - 2px);
+        }
+        .gradient-border > * {
+            position: relative;
+            z-index: 1;
+        }
+        .notification {
+            animation: slideInRight 0.5s ease-out;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .loading-dots {
+            display: inline-block;
+        }
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        .scroll-indicator {
+            animation: scrollBounce 2s infinite;
+        }
+        @keyframes scrollBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
     </style>
 </head>
 <body>
     <div class="min-h-screen">
         <!-- Header -->
-        <header class="flex justify-between items-center p-6 max-w-7xl mx-auto animate-fadeIn">
+        <header class="flex justify-between items-center p-6 max-w-7xl mx-auto animate-fadeIn sticky top-0 z-50 glass-effect rounded-2xl mx-4 mt-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center animate-float" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
                     <span class="text-white font-bold text-xl">G</span>
                 </div>
                 <div>
                     <span class="text-2xl font-bold text-black">Campus</span>
-                    <span class="text-sm text-gray-500 ml-2">v2.0</span>
+                    <span class="text-sm text-gray-500 ml-2 bg-yellow-100 px-2 py-1 rounded-full">v2.1</span>
                 </div>
             </div>
             <nav class="hidden md:flex gap-8 text-gray-600 font-medium">
-                <a href="#" class="hover:text-black transition-colors">💬 FAQs</a>
-                <a href="#" class="hover:text-black transition-colors">📱 App Store</a>
+                <a href="#features" class="hover:text-black transition-colors flex items-center gap-2">
+                    <i class="fas fa-star"></i>
+                    Features
+                </a>
+                <a href="#download" class="hover:text-black transition-colors flex items-center gap-2">
+                    <i class="fas fa-download"></i>
+                    Download
+                </a>
+                <a href="#" class="hover:text-black transition-colors flex items-center gap-2">
+                    <i class="fas fa-question-circle"></i>
+                    FAQs
+                </a>
             </nav>
+            <button id="mobileMenuBtn" class="md:hidden text-gray-600 hover:text-black transition-colors">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
         </header>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden">
+            <div class="w-64 h-full bg-white shadow-xl p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
+                            <span class="text-white font-bold">G</span>
+                        </div>
+                        <span class="text-xl font-bold">Campus</span>
+                    </div>
+                    <button id="closeMobileMenu" class="text-gray-500 hover:text-black">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <nav class="space-y-4">
+                    <a href="#features" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-star mr-3"></i>Features
+                    </a>
+                    <a href="#download" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-download mr-3"></i>Download
+                    </a>
+                    <a href="#" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-question-circle mr-3"></i>FAQs
+                    </a>
+                </nav>
+            </div>
+        </div>
 
         <!-- Hero Section -->
         <main class="max-w-7xl mx-auto px-6 py-12">
             <div class="text-center mb-16 animate-slideUp">
-                <h1 class="text-7xl lg:text-8xl hero-text text-black leading-tight mb-8">
+                <div class="mb-8">
+                    <span class="inline-block bg-gradient-to-r from-orange-500 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-4 animate-bounce-in">
+                        <i class="fas fa-rocket mr-2"></i>New Features Available
+                    </span>
+                </div>
+                
+                <h1 class="text-6xl lg:text-8xl hero-text text-black leading-tight mb-8">
                     Campus life
                     <br />
                     <span class="relative">
@@ -91,31 +228,56 @@
                     </span>
                 </h1>
 
-                <div class="flex flex-wrap justify-center gap-8 mb-16">
-                    <button class="text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:shadow-lg transition-all shadow-lg flex items-center gap-3" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
-                        📱 App Store
+                <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    The ultimate companion app for Gettysburg College students. Access everything you need for campus life in one beautiful, intuitive interface.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-6 mb-16">
+                    <button class="gradient-border group">
+                        <div class="bg-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 group-hover:bg-gray-50 flex items-center gap-3">
+                            <i class="fab fa-apple text-2xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs text-gray-500">Download on the</div>
+                                <div class="text-black">App Store</div>
+                            </div>
+                        </div>
                     </button>
                     
-                    <div class="flex items-center gap-2 text-gray-500">
-                        <span class="text-sm">Featured on</span>
-                        <div class="flex items-center gap-1">
-                            <span>⭐</span>
-                            <span class="font-semibold">App Store</span>
+                    <button class="gradient-border group">
+                        <div class="bg-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 group-hover:bg-gray-50 flex items-center gap-3">
+                            <i class="fab fa-google-play text-2xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs text-gray-500">Get it on</div>
+                                <div class="text-black">Google Play</div>
+                            </div>
                         </div>
-                    </div>
+                    </button>
                     
-                    <div class="flex items-center gap-2 text-gray-500">
-                        <span class="text-sm">Featured in</span>
-                        <div class="font-bold text-black">Forbes</div>
+                    <div class="flex items-center gap-6 text-gray-500">
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-500">⭐</span>
+                            <span class="font-semibold">4.9/5</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm">Featured in</span>
+                            <div class="font-bold text-black">Forbes</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Interactive Campus App Interface -->
-            <div class="animate-slideUp-delay">
-                <div class="relative w-full max-w-5xl mx-auto rounded-3xl p-8 shadow-2xl overflow-hidden" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 70%, #1a1a2e 100%);">
+            <div class="animate-slideUp-delay" id="features">
+                <div class="relative w-full max-w-6xl mx-auto rounded-3xl p-8 shadow-2xl overflow-hidden" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 70%, #1a1a2e 100%);">
+                    <!-- Animated background elements -->
+                    <div class="absolute inset-0 overflow-hidden">
+                        <div class="absolute top-10 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-float"></div>
+                        <div class="absolute bottom-20 right-20 w-16 h-16 bg-white bg-opacity-10 rounded-full animate-float" style="animation-delay: 1s;"></div>
+                        <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-white bg-opacity-10 rounded-full animate-float" style="animation-delay: 2s;"></div>
+                    </div>
+                    
                     <!-- Glassmorphism overlay -->
-                    <div class="absolute inset-0 bg-black bg-opacity-30 backdrop-blur-sm rounded-3xl"></div>
+                    <div class="absolute inset-0 bg-black bg-opacity-20 backdrop-blur-sm rounded-3xl"></div>
                     
                     <!-- Content -->
                     <div class="relative z-10">
@@ -126,16 +288,17 @@
                                     <span class="font-bold text-sm" style="color: #CC4E00;">G</span>
                                 </div>
                                 <span class="text-sm opacity-75">Campus App</span>
+                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                             </div>
                             <div class="flex items-center gap-4 text-sm opacity-75">
                                 <span>📶</span>
                                 <span>🔋</span>
-                                <span>Wed 16:15</span>
+                                <span id="currentTime">Wed 16:15</span>
                             </div>
                         </div>
 
                         <!-- Main interface -->
-                        <div class="grid md:grid-cols-2 gap-8">
+                        <div class="grid lg:grid-cols-2 gap-8">
                             <!-- Left side - Features list -->
                             <div class="space-y-3" id="featuresList">
                                 <div class="feature-item active flex items-center gap-4 p-4 rounded-2xl cursor-pointer" data-feature="dining">
@@ -157,6 +320,7 @@
                                     </div>
                                     <div class="text-white">
                                         <div class="font-medium">Campus Events</div>
+                                        <div class="text-sm opacity-75">3 upcoming</div>
                                     </div>
                                 </div>
                                 
@@ -166,6 +330,7 @@
                                     </div>
                                     <div class="text-white">
                                         <div class="font-medium">Campus Map</div>
+                                        <div class="text-sm opacity-75">Interactive</div>
                                     </div>
                                 </div>
                                 
@@ -175,6 +340,7 @@
                                     </div>
                                     <div class="text-white">
                                         <div class="font-medium">Class Schedule</div>
+                                        <div class="text-sm opacity-75">2 classes today</div>
                                     </div>
                                 </div>
                                 
@@ -184,6 +350,7 @@
                                     </div>
                                     <div class="text-white">
                                         <div class="font-medium">Laundry Status</div>
+                                        <div class="text-sm opacity-75">Available</div>
                                     </div>
                                 </div>
                                 
@@ -193,13 +360,24 @@
                                     </div>
                                     <div class="text-white">
                                         <div class="font-medium">Shuttle Times</div>
+                                        <div class="text-sm opacity-75">Next: 4:25 PM</div>
+                                    </div>
+                                </div>
+
+                                <div class="feature-item flex items-center gap-4 p-4 rounded-2xl cursor-pointer" data-feature="weather">
+                                    <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                        <span class="text-lg">🌤️</span>
+                                    </div>
+                                    <div class="text-white">
+                                        <div class="font-medium">Campus Weather</div>
+                                        <div class="text-sm opacity-75">72°F Sunny</div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Right side - App preview -->
                             <div class="flex justify-center">
-                                <div class="w-64 h-96 bg-white rounded-3xl p-4 shadow-xl">
+                                <div class="w-72 h-96 bg-white rounded-3xl p-4 shadow-xl animate-float">
                                     <div class="h-full bg-gray-50 rounded-2xl p-4 overflow-hidden">
                                         <div class="text-center mb-4">
                                             <div class="w-12 h-12 rounded-xl mx-auto mb-2 flex items-center justify-center" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
@@ -211,13 +389,19 @@
                                         
                                         <div class="space-y-3" id="appContent">
                                             <!-- Dining content (default) -->
-                                            <div class="bg-blue-50 p-3 rounded-lg">
+                                            <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
                                                 <h4 class="font-semibold text-blue-900">Servo</h4>
                                                 <p class="text-blue-700 text-sm">Open until 9:00 PM</p>
+                                                <div class="mt-2 text-xs text-blue-600">
+                                                    <i class="fas fa-users mr-1"></i>Medium crowd
+                                                </div>
                                             </div>
-                                            <div class="bg-green-50 p-3 rounded-lg">
+                                            <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
                                                 <h4 class="font-semibold text-green-900">Bullet Hole</h4>
                                                 <p class="text-green-700 text-sm">Open until 11:00 PM</p>
+                                                <div class="mt-2 text-xs text-green-600">
+                                                    <i class="fas fa-star mr-1"></i>Popular spot
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -227,11 +411,14 @@
 
                         <!-- Bottom notification -->
                         <div class="mt-8 flex justify-center">
-                            <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl px-6 py-3 text-white">
+                            <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl px-6 py-3 text-white notification">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                                     <span class="text-sm">📱 Enable Campus App</span>
                                     <span class="text-xs opacity-75">⇧⌘G</span>
+                                    <button class="ml-2 text-xs bg-white bg-opacity-20 px-2 py-1 rounded hover:bg-opacity-30 transition-colors">
+                                        Enable
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -240,90 +427,271 @@
             </div>
 
             <!-- Feature highlights -->
-            <div class="grid md:grid-cols-4 gap-6 mt-16 text-center">
-                <div>
-                    <div class="text-2xl mb-2">⚡</div>
-                    <h3 class="font-bold text-black mb-1">Lightning fast</h3>
-                    <p class="text-gray-600 text-sm">Native performance</p>
+            <div class="grid md:grid-cols-4 gap-6 mt-16 text-center" id="download">
+                <div class="group p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
+                    <h3 class="font-bold text-black mb-2">Lightning fast</h3>
+                    <p class="text-gray-600 text-sm">Native performance with instant loading</p>
                 </div>
-                <div>
-                    <div class="text-2xl mb-2">🎵</div>
-                    <h3 class="font-bold text-black mb-1">Real-time updates</h3>
-                    <p class="text-gray-600 text-sm">Live campus info</p>
+                <div class="group p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🎵</div>
+                    <h3 class="font-bold text-black mb-2">Real-time updates</h3>
+                    <p class="text-gray-600 text-sm">Live campus information and notifications</p>
                 </div>
-                <div>
-                    <div class="text-2xl mb-2">🎯</div>
-                    <h3 class="font-bold text-black mb-1">Smart notifications</h3>
-                    <p class="text-gray-600 text-sm">Personalized alerts</p>
+                <div class="group p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🎯</div>
+                    <h3 class="font-bold text-black mb-2">Smart notifications</h3>
+                    <p class="text-gray-600 text-sm">Personalized alerts for your schedule</p>
                 </div>
-                <div>
-                    <div class="text-2xl mb-2">🏛️</div>
-                    <h3 class="font-bold text-black mb-1">Campus integration</h3>
-                    <p class="text-gray-600 text-sm">All-in-one solution</p>
+                <div class="group p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300">
+                    <div class="text-3xl mb-4 group-hover:scale-110 transition-transform">🏛️</div>
+                    <h3 class="font-bold text-black mb-2">Campus integration</h3>
+                    <p class="text-gray-600 text-sm">Seamless connection to all campus services</p>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="mt-20 text-center">
+                <h2 class="text-4xl font-bold text-black mb-8">Ready to enhance your campus experience?</h2>
+                <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+                    Join thousands of students who are already using Campus App to navigate college life more efficiently.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <button class="gradient-border group">
+                        <div class="bg-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 group-hover:bg-gray-50 flex items-center gap-3">
+                            <i class="fab fa-apple text-2xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs text-gray-500">Download on the</div>
+                                <div class="text-black">App Store</div>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="gradient-border group">
+                        <div class="bg-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 group-hover:bg-gray-50 flex items-center gap-3">
+                            <i class="fab fa-google-play text-2xl"></i>
+                            <div class="text-left">
+                                <div class="text-xs text-gray-500">Get it on</div>
+                                <div class="text-black">Google Play</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="mt-20 grid md:grid-cols-3 gap-8 text-center">
+                <div class="p-8 bg-white rounded-2xl shadow-lg">
+                    <div class="text-4xl font-bold gradient-text mb-2">10K+</div>
+                    <div class="text-gray-600">Active Users</div>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-lg">
+                    <div class="text-4xl font-bold gradient-text mb-2">4.9★</div>
+                    <div class="text-gray-600">App Store Rating</div>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-lg">
+                    <div class="text-4xl font-bold gradient-text mb-2">24/7</div>
+                    <div class="text-gray-600">Campus Support</div>
                 </div>
             </div>
         </main>
+
+        <!-- Footer -->
+        <footer class="mt-20 bg-gray-900 text-white py-12">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
+                                <span class="text-white font-bold">G</span>
+                            </div>
+                            <span class="text-xl font-bold">Campus</span>
+                        </div>
+                        <p class="text-gray-400 text-sm">Your complete campus companion for Gettysburg College.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold mb-4">Features</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">Dining Hours</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Campus Events</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Interactive Map</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Class Schedule</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold mb-4">Support</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold mb-4">Connect</h3>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                    <p>&copy; 2024 Gettysburg Campus App. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('open');
+            }
+        });
+
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                weekday: 'short', 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false 
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        updateTime();
+        setInterval(updateTime, 60000); // Update every minute
+
         // Interactive feature switching
         const features = document.querySelectorAll('.feature-item');
         const appContent = document.getElementById('appContent');
         
         const contentMap = {
             dining: `
-                <div class="bg-blue-50 p-3 rounded-lg">
+                <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
                     <h4 class="font-semibold text-blue-900">Servo</h4>
                     <p class="text-blue-700 text-sm">Open until 9:00 PM</p>
+                    <div class="mt-2 text-xs text-blue-600">
+                        <i class="fas fa-users mr-1"></i>Medium crowd
+                    </div>
                 </div>
-                <div class="bg-green-50 p-3 rounded-lg">
+                <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
                     <h4 class="font-semibold text-green-900">Bullet Hole</h4>
                     <p class="text-green-700 text-sm">Open until 11:00 PM</p>
+                    <div class="mt-2 text-xs text-green-600">
+                        <i class="fas fa-star mr-1"></i>Popular spot
+                    </div>
                 </div>
             `,
             events: `
-                <div class="bg-purple-50 p-3 rounded-lg">
+                <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
                     <h4 class="font-semibold text-purple-900">Study Night</h4>
                     <p class="text-purple-700 text-sm">Library • Tonight 7 PM</p>
+                    <div class="mt-2 text-xs text-purple-600">
+                        <i class="fas fa-users mr-1"></i>45 attending
+                    </div>
                 </div>
-                <div class="bg-orange-50 p-3 rounded-lg">
+                <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
                     <h4 class="font-semibold text-orange-900">Movie Night</h4>
                     <p class="text-orange-700 text-sm">CUB • Friday 8 PM</p>
+                    <div class="mt-2 text-xs text-orange-600">
+                        <i class="fas fa-film mr-1"></i>Free popcorn
+                    </div>
                 </div>
             `,
             map: `
-                <div class="bg-gray-200 h-32 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-500 text-sm">Interactive Campus Map</span>
+                <div class="bg-gray-200 h-32 rounded-lg flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-100 to-green-100"></div>
+                    <div class="relative z-10 text-center">
+                        <i class="fas fa-map-marked-alt text-3xl text-gray-600 mb-2"></i>
+                        <p class="text-gray-600 text-sm">Interactive Campus Map</p>
+                        <p class="text-xs text-gray-500 mt-1">Tap to explore</p>
+                    </div>
                 </div>
             `,
             schedule: `
-                <div class="bg-red-50 p-3 rounded-lg">
+                <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
                     <h4 class="font-semibold text-red-900">Biology 101</h4>
                     <p class="text-red-700 text-sm">Science Center • 10:00 AM</p>
+                    <div class="mt-2 text-xs text-red-600">
+                        <i class="fas fa-clock mr-1"></i>In 15 minutes
+                    </div>
                 </div>
-                <div class="bg-indigo-50 p-3 rounded-lg">
+                <div class="bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-500">
                     <h4 class="font-semibold text-indigo-900">History 205</h4>
                     <p class="text-indigo-700 text-sm">Weidensall • 2:00 PM</p>
+                    <div class="mt-2 text-xs text-indigo-600">
+                        <i class="fas fa-book mr-1"></i>Bring textbook
+                    </div>
                 </div>
             `,
             laundry: `
-                <div class="bg-green-50 p-3 rounded-lg">
+                <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
                     <h4 class="font-semibold text-green-900">North Hall</h4>
                     <p class="text-green-700 text-sm">3 washers available</p>
+                    <div class="mt-2 text-xs text-green-600">
+                        <i class="fas fa-check mr-1"></i>Ready to use
+                    </div>
                 </div>
-                <div class="bg-yellow-50 p-3 rounded-lg">
+                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
                     <h4 class="font-semibold text-yellow-900">South Hall</h4>
                     <p class="text-yellow-700 text-sm">1 dryer finishing in 10 min</p>
+                    <div class="mt-2 text-xs text-yellow-600">
+                        <i class="fas fa-clock mr-1"></i>Almost done
+                    </div>
                 </div>
             `,
             transit: `
-                <div class="bg-blue-50 p-3 rounded-lg">
+                <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
                     <h4 class="font-semibold text-blue-900">Downtown Shuttle</h4>
                     <p class="text-blue-700 text-sm">Next: 4:25 PM</p>
+                    <div class="mt-2 text-xs text-blue-600">
+                        <i class="fas fa-map-marker-alt mr-1"></i>Pickup: Union
+                    </div>
                 </div>
-                <div class="bg-purple-50 p-3 rounded-lg">
+                <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
                     <h4 class="font-semibold text-purple-900">Walmart Shuttle</h4>
                     <p class="text-purple-700 text-sm">Next: 5:00 PM</p>
+                    <div class="mt-2 text-xs text-purple-600">
+                        <i class="fas fa-shopping-cart mr-1"></i>Grocery run
+                    </div>
+                </div>
+            `,
+            weather: `
+                <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-900">Current Weather</h4>
+                    <p class="text-blue-700 text-sm">72°F Sunny</p>
+                    <div class="mt-2 text-xs text-blue-600">
+                        <i class="fas fa-sun mr-1"></i>Perfect day!
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-lg border-l-4 border-gray-500">
+                    <h4 class="font-semibold text-gray-900">Forecast</h4>
+                    <p class="text-gray-700 text-sm">High: 78°F Low: 65°F</p>
+                    <div class="mt-2 text-xs text-gray-600">
+                        <i class="fas fa-cloud mr-1"></i>Partly cloudy
+                    </div>
                 </div>
             `
         };
@@ -352,10 +720,55 @@
                 indicator.innerHTML = '<div class="w-3 h-3 bg-green-400 rounded-full"></div>';
                 feature.appendChild(indicator);
                 
-                // Update content
+                // Update content with animation
                 const featureType = feature.dataset.feature;
-                appContent.innerHTML = contentMap[featureType];
+                appContent.style.opacity = '0';
+                appContent.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    appContent.innerHTML = contentMap[featureType];
+                    appContent.style.transition = 'all 0.3s ease';
+                    appContent.style.opacity = '1';
+                    appContent.style.transform = 'translateY(0)';
+                }, 150);
             });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.group').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
         });
     </script>
 </body>
