@@ -10,9 +10,9 @@
   <link rel="manifest" href="/faviocns/site.webmanifest">
   <style>
     body {
-      background: #fff7ed;
+      background: #18181b;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-      color: #1b1917;
+      color: #f3f3f3;
       margin: 0;
       padding: 0;
       min-height: 100vh;
@@ -23,7 +23,7 @@
       z-index: 100;
       width: 100%;
       backdrop-filter: blur(18px);
-      background: rgba(255,255,255,0.85);
+      background: rgba(24,24,27,0.92);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -50,7 +50,7 @@
       width: 36px;
       height: 36px;
       border-radius: 10px;
-      background: #fff;
+      background: #23232a;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -61,15 +61,15 @@
       font-size: 1.25rem;
       font-weight: 900;
       letter-spacing: -0.01em;
-      color: #1e1e1e;
+      color: #f3f3f3;
       margin-right: 0;
       display: flex;
       align-items: center;
     }
     .faq-header-version {
       font-size: 0.75rem;
-      color: #fff;
-      background: #1e1e1e;
+      color: #18181b;
+      background: #f3f3f3;
       padding: 0.08em 0.5em;
       border-radius: 0.7em;
       font-weight: 700;
@@ -79,8 +79,8 @@
       line-height: 1.1;
     }
     .faq-header-contact {
-      background: #1e1e1e;
-      color: #fff;
+      background: #f3f3f3;
+      color: #18181b;
       font-weight: 800;
       font-size: 1rem;
       border: none;
@@ -93,7 +93,7 @@
     }
     .faq-header-contact:hover, .faq-header-contact:focus {
       background: #292524;
-      color: #fff;
+      color: #f3f3f3;
       box-shadow: 0 6px 24px rgba(0,0,0,0.13);
     }
     .faq-main {
@@ -107,11 +107,11 @@
       letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
       text-align: left;
-      color: #1e1e1e;
+      color: #f3f3f3;
       margin-top: 2.5rem;
     }
     .faq-updated {
-      color: #7a7672;
+      color: #b3b3b3;
       font-size: 1rem;
       margin-bottom: 2.8rem;
       text-align: left;
@@ -123,7 +123,7 @@
       box-shadow: none;
     }
     .faq-item {
-      border-bottom: 1px solid #e5e1de;
+      border-bottom: 1px solid #23232a;
     }
     .faq-question-row {
       display: flex;
@@ -132,14 +132,20 @@
       padding: 2.1rem 0.5rem 2.1rem 0;
       font-size: 1.22rem;
       font-weight: 800;
-      color: #1e1e1e;
-      transition: background 0.2s;
+      color: #f3f3f3;
+      transition: none !important;
       user-select: none;
       gap: 0.7rem;
+      background: none !important;
+      box-shadow: none !important;
     }
     .faq-question-row:focus {
       outline: none;
-      background: #f3f1ef;
+      background: none !important;
+    }
+    .faq-question-row:active {
+      background: none !important;
+      box-shadow: none !important;
     }
     .faq-icon {
       width: 38px;
@@ -154,7 +160,7 @@
       display: block;
       width: 38px;
       height: 38px;
-      stroke: #1e1e1e;
+      stroke: #f3f3f3;
       stroke-width: 2.5;
       transition: transform 0.35s cubic-bezier(.4,0,.2,1);
     }
@@ -165,7 +171,7 @@
       max-height: 0;
       overflow: hidden;
       opacity: 0;
-      color: #353535;
+      color: #e5e5e5;
       font-size: 1.09rem;
       line-height: 1.8;
       padding: 0 0.5rem;
@@ -184,15 +190,15 @@
     .faq-footer {
       margin-top: 4.5rem;
       font-size: 1.13rem;
-      color: #1e1e1e;
+      color: #f3f3f3;
       text-align: left;
       padding-bottom: 2.5rem;
     }
     .faq-footer strong {
-      color: #1e1e1e;
+      color: #fff;
     }
     a {
-      color: #1e1e1e;
+      color: #fd9b61;
       text-decoration: underline;
     }
     @media (max-width: 700px) {
