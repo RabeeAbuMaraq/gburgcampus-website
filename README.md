@@ -1,2 +1,2 @@
 # gburgcampus-website
-Official website for Gettysburg Campus App
+Official website for Gettysburg Campus App, coming soon!
