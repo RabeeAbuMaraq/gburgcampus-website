@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campus Events - Gettysburg Campus App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/faviocns/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/faviocns/favicon-96x96.png">
+  <link rel="icon" type="image/x-icon" href="/faviocns/favicon.ico">
+  <link rel="manifest" href="/faviocns/site.webmanifest">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js"></script>
+  <style>
+    body {
+      background: #fff7ed;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #CC4E00 0%, #043B82 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .event-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .event-card:hover::before {
+      left: 100%;
+    }
+
+    .event-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .animate-slideUp {
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .loading-spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #CC4E00;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .filter-btn {
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);
+      color: white;
+    }
+
+    .date-badge {
+      background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);
+      color: white;
+      font-weight: 600;
+    }
+
+    .time-badge {
+      background: rgba(204, 78, 0, 0.1);
+      color: #CC4E00;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a href="/" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
+              <img src="https://i.postimg.cc/50NZw2f8/temp-Image-Q4-T2tl.avif" alt="Gettysburg Clock Tower Logo" class="w-8 h-8 object-contain" />
+            </div>
+            <div>
+              <span class="text-xl font-bold text-gray-900">Campus</span>
+              <span class="text-sm text-gray-500 block">Events</span>
+            </div>
+          </a>
+        </div>
+        
+        <nav class="hidden md:flex gap-8 text-gray-600 font-medium">
+          <a href="/" class="hover:text-black transition-colors flex items-center gap-2">
+            <i class="fas fa-home"></i>
+            Home
+          </a>
+          <a href="/pages/faqs.html" class="hover:text-black transition-colors flex items-center gap-2">
+            <i class="fas fa-question-circle"></i>
+            FAQs
+          </a>
+        </nav>
+
+        <button id="mobileMenuBtn" class="md:hidden text-gray-600 hover:text-black transition-colors">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden hidden">
+      <div class="w-64 h-full bg-white shadow-xl p-6">
+        <div class="flex justify-between items-center mb-8">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #CC4E00 0%, #043B82 100%);">
+              <img src="https://i.postimg.cc/50NZw2f8/temp-Image-Q4-T2tl.avif" alt="Gettysburg Clock Tower Logo" class="w-7 h-7 object-contain" />
+            </div>
+            <span class="text-xl font-bold">Campus</span>
+          </div>
+          <button id="closeMobileMenu" class="text-gray-500 hover:text-black">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <nav class="space-y-4">
+          <a href="/" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+            <i class="fas fa-home mr-3"></i>Home
+          </a>
+          <a href="/pages/faqs.html" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+            <i class="fas fa-question-circle mr-3"></i>FAQs
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <!-- Page Header -->
+    <div class="text-center mb-12 animate-slideUp">
+      <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+        Campus <span class="gradient-text">Events</span>
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Stay updated with all the latest events happening on campus. From academic lectures to social gatherings, never miss out on what's happening at Gettysburg College.
+      </p>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+      <div class="flex flex-wrap gap-2">
+        <button id="allEvents" class="filter-btn active px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+          All Events
+        </button>
+        <button id="todayEvents" class="filter-btn px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+          Today
+        </button>
+        <button id="weekEvents" class="filter-btn px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+          This Week
+        </button>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button id="refreshBtn" class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+        <div class="text-sm text-gray-500">
+          <span id="lastUpdated">Last updated: Never</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="text-center py-16">
+      <div class="loading-spinner mx-auto mb-4"></div>
+      <p class="text-gray-600">Loading campus events...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" class="hidden text-center py-16">
+      <div class="text-red-500 text-6xl mb-4">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Unable to load events</h3>
+      <p class="text-gray-600 mb-4">There was an error fetching the latest events from Engage Gettysburg.</p>
+      <button id="retryBtn" class="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
+        Try Again
+      </button>
+    </div>
+
+    <!-- Events Container -->
+    <div id="eventsContainer" class="hidden">
+      <!-- Events will be populated here -->
+    </div>
+
+    <!-- No Events State -->
+    <div id="noEventsState" class="hidden text-center py-16">
+      <div class="text-gray-400 text-6xl mb-4">
+        <i class="fas fa-calendar-times"></i>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">No events found</h3>
+      <p class="text-gray-600">There are no upcoming events matching your current filter.</p>
+    </div>
+  </main>
+
+  <script>
+    // Global variables
+    let allEvents = [];
+    let filteredEvents = [];
+    let currentFilter = 'all';
+
+    // DOM elements
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const eventsContainer = document.getElementById('eventsContainer');
+    const noEventsState = document.getElementById('noEventsState');
+    const lastUpdated = document.getElementById('lastUpdated');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const retryBtn = document.getElementById('retryBtn');
+
+    // Filter buttons
+    const allEventsBtn = document.getElementById('allEvents');
+    const todayEventsBtn = document.getElementById('todayEvents');
+    const weekEventsBtn = document.getElementById('weekEvents');
+
+    // Mobile menu functionality
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+    });
+
+    closeMobileMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+
+    mobileMenu.addEventListener('click', (e) => {
+      if (e.target === mobileMenu) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+
+    // Event filtering functions
+    function isToday(date) {
+      const today = new Date();
+      return date.toDateString() === today.toDateString();
+    }
+
+    function isThisWeek(date) {
+      const today = new Date();
+      const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+      return date >= today && date <= weekFromNow;
+    }
+
+    function filterEvents(filter) {
+      currentFilter = filter;
+      const now = new Date();
+      
+      filteredEvents = allEvents.filter(event => {
+        const eventDate = new Date(event.start);
+        
+        switch (filter) {
+          case 'today':
+            return isToday(eventDate);
+          case 'week':
+            return isThisWeek(eventDate);
+          default:
+            return eventDate >= now;
+        }
+      });
+
+      // Update active filter button
+      [allEventsBtn, todayEventsBtn, weekEventsBtn].forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      switch (filter) {
+        case 'today':
+          todayEventsBtn.classList.add('active');
+          break;
+        case 'week':
+          weekEventsBtn.classList.add('active');
+          break;
+        default:
+          allEventsBtn.classList.add('active');
+      }
+
+      renderEvents();
+    }
+
+    // Format date and time
+    function formatDateTime(date) {
+      const eventDate = new Date(date);
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      
+      let dateStr = '';
+      if (isToday(eventDate)) {
+        dateStr = 'Today';
+      } else if (eventDate.toDateString() === tomorrow.toDateString()) {
+        dateStr = 'Tomorrow';
+      } else {
+        dateStr = eventDate.toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          month: 'short', 
+          day: 'numeric' 
+        });
+      }
+      
+      const timeStr = eventDate.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+      
+      return { dateStr, timeStr };
+    }
+
+    // Format duration
+    function formatDuration(start, end) {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      const durationMs = endDate - startDate;
+      const hours = Math.floor(durationMs / (1000 * 60 * 60));
+      const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+      
+      if (hours > 0) {
+        return `${hours}h ${minutes > 0 ? minutes + 'm' : ''}`;
+      }
+      return `${minutes}m`;
+    }
+
+    // Render events
+    function renderEvents() {
+      if (filteredEvents.length === 0) {
+        eventsContainer.classList.add('hidden');
+        noEventsState.classList.remove('hidden');
+        return;
+      }
+
+      noEventsState.classList.add('hidden');
+      eventsContainer.classList.remove('hidden');
+
+      // Group events by date
+      const groupedEvents = {};
+      filteredEvents.forEach(event => {
+        const date = new Date(event.start).toDateString();
+        if (!groupedEvents[date]) {
+          groupedEvents[date] = [];
+        }
+        groupedEvents[date].push(event);
+      });
+
+      // Sort dates
+      const sortedDates = Object.keys(groupedEvents).sort();
+
+      let html = '';
+      sortedDates.forEach(date => {
+        const events = groupedEvents[date];
+        const firstEvent = events[0];
+        const { dateStr } = formatDateTime(firstEvent.start);
+        
+        html += `
+          <div class="mb-8 animate-fadeIn">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+              <span class="date-badge px-3 py-1 rounded-lg text-sm">${dateStr}</span>
+              <span class="text-gray-500 text-lg">${events.length} event${events.length > 1 ? 's' : ''}</span>
+            </h2>
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        `;
+
+        events.forEach(event => {
+          const { timeStr } = formatDateTime(event.start);
+          const duration = formatDuration(event.start, event.end);
+          
+          html += `
+            <div class="event-card bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <div class="flex justify-between items-start mb-3">
+                <div class="time-badge px-2 py-1 rounded text-xs">
+                  ${timeStr} • ${duration}
+                </div>
+                ${event.location ? `
+                  <div class="text-xs text-gray-500 flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${event.location}
+                  </div>
+                ` : ''}
+              </div>
+              
+              <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                ${event.summary}
+              </h3>
+              
+              ${event.description ? `
+                <p class="text-gray-600 text-sm mb-3 line-clamp-3">
+                  ${event.description.replace(/<[^>]*>/g, '')}
+                </p>
+              ` : ''}
+              
+              ${event.url ? `
+                <a href="${event.url}" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 transition-colors">
+                  <i class="fas fa-external-link-alt"></i>
+                  View on Engage
+                </a>
+              ` : ''}
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      eventsContainer.innerHTML = html;
+    }
+
+    // Parse ICS data
+    function parseICSData(icsData) {
+      const calendar = ICAL.parse(icsData);
+      const events = [];
+      
+      calendar[2].forEach(component => {
+        if (component[0] === 'vevent') {
+          const event = {};
+          
+          component[1].forEach(property => {
+            const [name, params, value] = property;
+            
+            switch (name) {
+              case 'summary':
+                event.summary = value;
+                break;
+              case 'dtstart':
+                event.start = value;
+                break;
+              case 'dtend':
+                event.end = value;
+                break;
+              case 'location':
+                event.location = value;
+                break;
+              case 'description':
+                event.description = value;
+                break;
+              case 'url':
+                event.url = value;
+                break;
+            }
+          });
+          
+          if (event.summary && event.start) {
+            events.push(event);
+          }
+        }
+      });
+      
+      return events;
+    }
+
+    // Fetch events from ICS feed
+    async function fetchEvents() {
+      try {
+        showLoading();
+        
+        const response = await fetch('https://engage.gettysburg.edu/ical/gettysburg/ical_gettysburg.ics');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const icsData = await response.text();
+        allEvents = parseICSData(icsData);
+        
+        // Filter out past events and sort by date
+        const now = new Date();
+        allEvents = allEvents
+          .filter(event => new Date(event.start) >= now)
+          .sort((a, b) => new Date(a.start) - new Date(b.start));
+        
+        // Apply current filter
+        filterEvents(currentFilter);
+        
+        // Update last updated time
+        const nowStr = new Date().toLocaleString();
+        lastUpdated.textContent = `Last updated: ${nowStr}`;
+        
+        // Cache in localStorage
+        localStorage.setItem('campusEvents', JSON.stringify({
+          events: allEvents,
+          timestamp: Date.now()
+        }));
+        
+        hideLoading();
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        showError();
+      }
+    }
+
+    // Show/hide loading state
+    function showLoading() {
+      loadingState.classList.remove('hidden');
+      errorState.classList.add('hidden');
+      eventsContainer.classList.add('hidden');
+      noEventsState.classList.add('hidden');
+    }
+
+    function hideLoading() {
+      loadingState.classList.add('hidden');
+    }
+
+    function showError() {
+      loadingState.classList.add('hidden');
+      errorState.classList.remove('hidden');
+      eventsContainer.classList.add('hidden');
+      noEventsState.classList.add('hidden');
+    }
+
+    // Load cached events if available
+    function loadCachedEvents() {
+      const cached = localStorage.getItem('campusEvents');
+      if (cached) {
+        try {
+          const data = JSON.parse(cached);
+          const cacheAge = Date.now() - data.timestamp;
+          const maxAge = 30 * 60 * 1000; // 30 minutes
+          
+          if (cacheAge < maxAge) {
+            allEvents = data.events;
+            filterEvents(currentFilter);
+            const cacheTime = new Date(data.timestamp).toLocaleString();
+            lastUpdated.textContent = `Last updated: ${cacheTime} (cached)`;
+            return true;
+          }
+        } catch (error) {
+          console.error('Error loading cached events:', error);
+        }
+      }
+      return false;
+    }
+
+    // Event listeners
+    allEventsBtn.addEventListener('click', () => filterEvents('all'));
+    todayEventsBtn.addEventListener('click', () => filterEvents('today'));
+    weekEventsBtn.addEventListener('click', () => filterEvents('week'));
+    refreshBtn.addEventListener('click', fetchEvents);
+    retryBtn.addEventListener('click', fetchEvents);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!loadCachedEvents()) {
+        fetchEvents();
+      }
+    });
+  </script>
+</body>
+</html> 

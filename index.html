@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Gettysburg Campus App - Your Complete Campus Companion</title>
   <!-- Favicon and App Icons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/faviocns/apple-touch-icon.png">
@@ -327,6 +327,188 @@
       box-shadow: 0 8px 32px 0 rgba(41,37,36,0.18);
       background: #292524;
     }
+
+    /* Mobile-specific optimizations */
+    @media (max-width: 768px) {
+      /* Improve touch targets */
+      .feature-item {
+        min-height: 60px;
+        padding: 16px !important;
+      }
+      
+      /* Better spacing for mobile */
+      .hero-text {
+        font-size: 3rem !important;
+        line-height: 1.1 !important;
+      }
+      
+      /* Optimize app interface for mobile */
+      .w-72.h-96 {
+        width: 280px !important;
+        height: 360px !important;
+      }
+      
+      /* Improve button touch targets */
+      .store-btn-anim {
+        min-height: 56px;
+        padding: 16px 20px !important;
+      }
+      
+      /* Better mobile navigation */
+      .mobile-menu .w-64 {
+        width: 85vw !important;
+        max-width: 320px;
+      }
+      
+      /* Optimize coming soon text for mobile */
+      #comingSoonText {
+        font-size: 4vw !important;
+        word-break: break-word;
+        white-space: normal !important;
+        text-align: center;
+        padding: 0 20px;
+      }
+      
+      /* Improve mobile grid layouts */
+      .grid.md\\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+      }
+      
+      .grid.md\\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+      
+      /* Better mobile spacing */
+      .p-6 {
+        padding: 16px !important;
+      }
+      
+      .px-6 {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+      
+      .py-12 {
+        padding-top: 32px !important;
+        padding-bottom: 32px !important;
+      }
+      
+      /* Optimize mobile header */
+      header {
+        margin: 8px !important;
+        padding: 12px 16px !important;
+      }
+      
+      /* Better mobile text sizes */
+      .text-xl {
+        font-size: 18px !important;
+      }
+      
+      .text-2xl {
+        font-size: 20px !important;
+      }
+      
+      /* Improve mobile footer */
+      footer .grid.md\\:grid-cols-4 {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+      
+      /* Better mobile app preview */
+      .lg\\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+      
+      /* Optimize mobile feature highlights */
+      .mt-16 {
+        margin-top: 32px !important;
+      }
+      
+      .mt-20 {
+        margin-top: 40px !important;
+      }
+      
+      /* Improve mobile button spacing */
+      .gap-8 {
+        gap: 16px !important;
+      }
+      
+      /* Better mobile notification */
+      .notification {
+        margin: 0 16px;
+        padding: 12px 16px !important;
+      }
+      
+      /* Optimize mobile app content */
+      #appContent .p-3 {
+        padding: 12px !important;
+      }
+      
+      /* Better mobile feature icons */
+      .w-8.h-8 {
+        width: 32px !important;
+        height: 32px !important;
+      }
+      
+      /* Improve mobile text readability */
+      .text-sm {
+        font-size: 14px !important;
+      }
+      
+      .text-xs {
+        font-size: 12px !important;
+      }
+    }
+
+    /* Extra small mobile optimizations */
+    @media (max-width: 480px) {
+      .hero-text {
+        font-size: 2.5rem !important;
+      }
+      
+      .w-72.h-96 {
+        width: 260px !important;
+        height: 320px !important;
+      }
+      
+      .grid.md\\:grid-cols-4 {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .px-6 {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+      }
+      
+      .p-6 {
+        padding: 12px !important;
+      }
+      
+      .feature-item {
+        padding: 12px !important;
+      }
+      
+      .store-btn-anim {
+        padding: 14px 16px !important;
+        font-size: 16px !important;
+      }
+    }
+
+    /* Prevent horizontal scroll on mobile */
+    @media (max-width: 768px) {
+      body {
+        overflow-x: hidden;
+      }
+      
+      .min-h-screen {
+        min-height: 100vh;
+        width: 100%;
+        max-width: 100vw;
+      }
+    }
   </style>
 </head>
 
@@ -351,6 +533,10 @@
         <a href="#features" class="hover:text-black transition-colors flex items-center gap-2">
           <i class="fas fa-star"></i>
           Features
+        </a>
+        <a href="pages/events.html" class="hover:text-black transition-colors flex items-center gap-2">
+          <i class="fas fa-calendar-alt"></i>
+          Events
         </a>
         <a href="#download" class="hover:text-black transition-colors flex items-center gap-2">
           <i class="fas fa-download"></i>
@@ -383,6 +569,9 @@
         <nav class="space-y-4">
           <a href="#features" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
             <i class="fas fa-star mr-3"></i>Features
+          </a>
+          <a href="pages/events.html" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
+            <i class="fas fa-calendar-alt mr-3"></i>Events
           </a>
           <a href="#download" class="block py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors">
             <i class="fas fa-download mr-3"></i>Download
@@ -420,7 +609,7 @@
           The ultimate companion app for Gettysburg College students. Access everything you need for campus life in one beautiful, intuitive interface.
         </p>
 
-        <div class="flex flex-row justify-center gap-8 mb-16 items-center">
+                <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 mb-16 items-center">
           <!-- iPhone App Store Button -->
           <button class="store-btn-anim group relative inline-flex max-h-[3.75rem] items-center justify-center rounded-2xl px-5 py-4 pl-[3.25rem] text-lg font-bold outline-none transition duration-300 focus:ring-2 focus:ring-purple-400 bg-[#292524] text-[#fff7ed] shadow-xl" type="button">
             <span class="store-apple">
@@ -485,7 +674,7 @@
             <!-- Main interface -->
             <div class="grid lg:grid-cols-2 gap-8">
               <!-- Left side - Features list -->
-              <div class="space-y-3" id="featuresList">
+              <div class="space-y-3 order-2 lg:order-1" id="featuresList">
                 <div class="feature-item active flex items-center gap-4 p-4 rounded-2xl cursor-pointer" data-feature="dining">
                   <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
                     <span class="text-lg">🍽️</span>
@@ -561,7 +750,7 @@
               </div>
 
               <!-- Right side - App preview -->
-              <div class="flex justify-center">
+              <div class="flex justify-center order-1 lg:order-2">
                 <div class="w-72 h-96 bg-white rounded-3xl p-4 shadow-xl animate-float">
                   <div class="h-full bg-gray-50 rounded-2xl p-4 overflow-hidden">
                     <div class="text-center mb-4">
@@ -735,15 +924,30 @@
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const closeMobileMenu = document.getElementById('closeMobileMenu');
+    
+    // Improved mobile menu with touch support
     mobileMenuBtn.addEventListener('click', () => {
       mobileMenu.classList.add('open');
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
     });
+    
     closeMobileMenu.addEventListener('click', () => {
       mobileMenu.classList.remove('open');
+      document.body.style.overflow = ''; // Restore scroll
     });
+    
     mobileMenu.addEventListener('click', (e) => {
       if (e.target === mobileMenu) {
         mobileMenu.classList.remove('open');
+        document.body.style.overflow = ''; // Restore scroll
+      }
+    });
+    
+    // Close mobile menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
       }
     });
     // Update current time
@@ -759,9 +963,20 @@
     }
     updateTime();
     setInterval(updateTime, 60000); // Update every minute
-    // Interactive feature switching
+    // Interactive feature switching with mobile touch support
     const features = document.querySelectorAll('.feature-item');
     const appContent = document.getElementById('appContent');
+    
+    // Add touch feedback for mobile
+    features.forEach(feature => {
+      feature.addEventListener('touchstart', function() {
+        this.style.transform = 'scale(0.98)';
+      });
+      
+      feature.addEventListener('touchend', function() {
+        this.style.transform = '';
+      });
+    });
     const contentMap = {
       dining: `
                 <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
